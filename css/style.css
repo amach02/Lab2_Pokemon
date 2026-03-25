@@ -12,6 +12,12 @@ h1 {
     margin-top: 20px;
 }
 
+h2 {
+    color: #ff3c00;
+    margin-top: 20px;
+}
+
+
 /* NAVBAR */
 nav ul {
     list-style: none;
@@ -79,6 +85,15 @@ button:hover {
 
 /* TARJETA DE RESULTADO */
 #pokemonInfo {
+    margin: 30px auto;
+    padding: 20px;
+    width: 600px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+}
+
+#pokemonList {
     margin: 30px auto;
     padding: 20px;
     width: 600px;

@@ -1,4 +1,5 @@
 import { EjemploGuardar }  from "./data/EjemploGuardar.js";
+import { Servicios } from "./Servicios.js"; 
 
 
 const btnSearch = document.getElementById("btnSearch");
@@ -6,20 +7,21 @@ const btnSave = document.getElementById("btnSave");
 const btnRead = document.getElementById("btnRead");
 const inputPokemonName = document.getElementById("pokemonName");
 const pokemonInfo = document.getElementById("pokemonInfo");
-
+Servicios.listaPokemon();
 btnSearch.addEventListener("click", async () => {
     pokemonInfo.innerHTML = "searching pokemon..."
      searchPokemon(inputPokemonName.value.toLowerCase());
+
 });
 
 btnSave.addEventListener("click", async () => {
     const pokemons = [{nombre: 'pikachu', nivel: 10}, {nombre: 'charmander', nivel: 15}];
-    EjemploGuardar.guardarPokemon(pokemons);
+    Servicios.guardarPokemon(pokemons);
     alert("Pokemon guardados en localStorage");
 });
 
 btnRead.addEventListener("click", async () => {
-    const pokemons = EjemploGuardar.obtenerPokemon();
+    const pokemons = Servicios.obtenerPokemon();
     alert("Pokemon obtenidos de localStorage: " + JSON.stringify(pokemons));
     let data_pokemons = '';
     pokemons.forEach(pokemon => {
