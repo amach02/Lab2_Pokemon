@@ -1,0 +1,109 @@
+/* RESET */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+}
+
+/* TITULOS */
+h1 {
+    color: #ff3c00;
+    margin-top: 20px;
+}
+
+/* NAVBAR */
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    background-color: #1e1e2f;
+    padding: 10px;
+    border-radius: 0 0 10px 10px;
+}
+
+nav ul li {
+    margin: 0 10px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+nav ul li a:hover {
+    background-color: #ff3c00;
+}
+
+/* CONTENEDOR PRINCIPAL */
+main {
+    margin-top: 40px;
+}
+
+/* SECCIÓN DE INPUT */
+section {
+    margin: 20px auto;
+}
+
+/* INPUT */
+input {
+    padding: 12px;
+    width: 250px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.2);
+}
+
+/* BOTONES */
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    background-color: #ff3c00;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #cc2f00;
+    transform: scale(1.05);
+}
+
+/* TARJETA DE RESULTADO */
+#pokemonInfo {
+    margin: 30px auto;
+    padding: 20px;
+    width: 600px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.2);
+}
+
+/* FOOTER */
+footer {
+    margin-top: 50px;
+    padding: 15px;
+    background-color: #1e1e2f;
+    color: white;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1; /* Esto empuja el footer hacia abajo */
+}
