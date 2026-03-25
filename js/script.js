@@ -1,4 +1,4 @@
-import { EjemploGuardar }  from "./data/EjemploGuardar.js";
+import { GuardarEquipo } from "./data/GuardarEquipo.js";
 
 
 const btnSearch = document.getElementById("btnSearch");
@@ -7,19 +7,27 @@ const btnRead = document.getElementById("btnRead");
 const inputPokemonName = document.getElementById("pokemonName");
 const pokemonInfo = document.getElementById("pokemonInfo");
 
+let pokemonEnPantalla = null;
+
 btnSearch.addEventListener("click", async () => {
-    pokemonInfo.innerHTML = "searching pokemon..."
-     searchPokemon(inputPokemonName.value.toLowerCase());
+    const nombre = inputPokemonName.value.toLowerCase();
+    if (!nombre) return;
+
+    pokemonInfo.innerHTML = "searching pokemon...";
+
+    pokemonEnPantalla = await searchPokemon(nombre);
 });
 
-btnSave.addEventListener("click", async () => {
-    const pokemons = [{nombre: 'pikachu', nivel: 10}, {nombre: 'charmander', nivel: 15}];
-    EjemploGuardar.guardarPokemon(pokemons);
-    alert("Pokemon guardados en localStorage");
+btnSave.addEventListener("click", () => {
+    if (pokemonEnPantalla) {
+        GuardarEquipo.guardarPokemon(pokemonEnPantalla);
+    } else {
+        alert("Primero debes buscar un Pokémon para poder guardarlo.");
+    }
 });
 
 btnRead.addEventListener("click", async () => {
-    const pokemons = EjemploGuardar.obtenerPokemon();
+    const pokemons = GuardarEquipo.obtenerEquipo();
     alert("Pokemon obtenidos de localStorage: " + JSON.stringify(pokemons));
     let data_pokemons = '';
     pokemons.forEach(pokemon => {
@@ -37,6 +45,12 @@ async function searchPokemon(nombre) {
         }//END IF
         const data = await response.json();
         displayPokemonInfo(data);
+
+        return {
+            nombre: data.name,
+            nivel: Math.floor(Math.random() * 50) + 1
+        };
+
     } catch (error) {
         pokemonInfo.innerHTML = "Pokemon not found";
     }//END TRY CATCH
@@ -65,7 +79,7 @@ function changebackground(type) {
         case "fire":
             document.body.style.backgroundColor = "#d27553";
             document.body.style.color = "#672d0a";
-            break;    
+            break;
         case "water":
             document.body.style.backgroundColor = "#69bce0";
             document.body.style.color = "#10425b";
