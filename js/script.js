@@ -1,5 +1,6 @@
 import { EjemploGuardar }  from "./data/EjemploGuardar.js";
-
+import { Pokemon } from "./business/pokemon.js";
+import { TipoColor } from "./business/TipoColor.js";
 
 const btnSearch = document.getElementById("btnSearch");
 const btnSave = document.getElementById("btnSave");
@@ -36,47 +37,22 @@ async function searchPokemon(nombre) {
             throw new Error("Pokemon not found");
         }//END IF
         const data = await response.json();
-        displayPokemonInfo(data);
+        const nuevoPokemon = Pokemon.fromAPI(data);
+        displayPokemonInfo(nuevoPokemon);
     } catch (error) {
         pokemonInfo.innerHTML = "Pokemon not found";
     }//END TRY CATCH
 }//END serchPokemon
 
-function displayPokemonInfo(data) {
-    const type = data.types[0].type.name;
+function displayPokemonInfo(pokemon) {
+    
     pokemonInfo.innerHTML = `
-        <h2>${data.name.toUpperCase()}</h2>
-        <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}">
-        <p>Height: ${data.height}</p>
-        <p>Weight: ${data.weight}</p>
-        <p>Types: ${data.types.map(type => type.type.name).join(", ")}</p>
+        <h2>${pokemon.getNombre().toUpperCase()}</h2>
+        <img src="${pokemon.getImagen()}" alt="${pokemon.getNombre()}">
+        <p>Height: ${pokemon.getAltura()}</p>
+        <p>Weight: ${pokemon.getPeso()}</p>
+        <p>Types: ${pokemon.getTipo().join(", ")}</p>
     `;
-    console.log(type);
-    changebackground(type);
-}//END FUNCTION
-
-function changebackground(type) {
-    console.log(type);
-    switch (type) {
-        case "grass":
-            document.body.style.backgroundColor = "#78b35a";
-            document.body.style.color = "#11540f";
-            break;
-        case "fire":
-            document.body.style.backgroundColor = "#d27553";
-            document.body.style.color = "#672d0a";
-            break;    
-        case "water":
-            document.body.style.backgroundColor = "#69bce0";
-            document.body.style.color = "#10425b";
-
-            break;
-        case "electric":
-            document.body.style.backgroundColor = "#F9E79F";
-            document.body.style.color = "#863636";
-            break;
-        default:
-            document.body.style.backgroundColor = "#FFFFFF";
-    }
-
+    
+    TipoColor.changeBackground(pokemon.getTipo()[0]);
 }//END FUNCTION
