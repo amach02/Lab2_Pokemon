@@ -1,7 +1,7 @@
 export class GuardarEquipo {
-    static KEY = "mis_pokemon";
+    static KEY = "equipo_pokemon";
 
-    // Necesitamos esto para leer antes de guardar
+    // Para leer antes de guardar
     static obtenerEquipo() {
         const datos = localStorage.getItem(this.KEY);
         return datos ? JSON.parse(datos) : [];

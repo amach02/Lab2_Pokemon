@@ -1,33 +1,26 @@
+import { EjemploGuardar } from "./data/EjemploGuardar.js";
 import { GuardarEquipo } from "./data/GuardarEquipo.js";
-
 
 const btnSearch = document.getElementById("btnSearch");
 const btnSave = document.getElementById("btnSave");
 const btnRead = document.getElementById("btnRead");
 const inputPokemonName = document.getElementById("pokemonName");
 const pokemonInfo = document.getElementById("pokemonInfo");
-
-let pokemonEnPantalla = null;
+const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
 
 btnSearch.addEventListener("click", async () => {
-    const nombre = inputPokemonName.value.toLowerCase();
-    if (!nombre) return;
-
-    pokemonInfo.innerHTML = "searching pokemon...";
-
-    pokemonEnPantalla = await searchPokemon(nombre);
+    pokemonInfo.innerHTML = "searching pokemon..."
+    searchPokemon(inputPokemonName.value.toLowerCase());
 });
 
-btnSave.addEventListener("click", () => {
-    if (pokemonEnPantalla) {
-        GuardarEquipo.guardarPokemon(pokemonEnPantalla);
-    } else {
-        alert("Primero debes buscar un Pokémon para poder guardarlo.");
-    }
+btnSave.addEventListener("click", async () => {
+    const pokemons = [{ nombre: 'pikachu', nivel: 10 }, { nombre: 'charmander', nivel: 15 }];
+    EjemploGuardar.guardarPokemon(pokemons);
+    alert("Pokemon guardados en localStorage");
 });
 
 btnRead.addEventListener("click", async () => {
-    const pokemons = GuardarEquipo.obtenerEquipo();
+    const pokemons = EjemploGuardar.obtenerPokemon();
     alert("Pokemon obtenidos de localStorage: " + JSON.stringify(pokemons));
     let data_pokemons = '';
     pokemons.forEach(pokemon => {
@@ -35,6 +28,34 @@ btnRead.addEventListener("click", async () => {
     });
     alert("Pokemon obtenidos de localStorage:\n" + data_pokemons);
 });
+
+
+// Evento para guardar un pokemon en el equipo
+btnGuardarEquipo.addEventListener("click", async () => {
+    const busqueda = inputPokemonName.value.toLowerCase();
+    if (!busqueda) {
+        alert("Escribe un nombre o ID primero");
+        return;
+    }
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${busqueda}`);
+        if (!response.ok) {
+            alert("No se pudo encontrar el Pokémon para guardar");
+            return;
+        }
+        const data = await response.json();
+        const pokemon = {
+            nombre: data.name,
+            nivel: 10 // Puse este asi, pero se puede cambiar
+        };
+        GuardarEquipo.guardarPokemon(pokemon);
+    } catch (error) {
+        console.error("Error al procesar el guardado:", error);
+        alert("Hubo un error al intentar guardar el equipo");
+    }
+});
+
+
 
 async function searchPokemon(nombre) {
 
@@ -45,12 +66,6 @@ async function searchPokemon(nombre) {
         }//END IF
         const data = await response.json();
         displayPokemonInfo(data);
-
-        return {
-            nombre: data.name,
-            nivel: Math.floor(Math.random() * 50) + 1
-        };
-
     } catch (error) {
         pokemonInfo.innerHTML = "Pokemon not found";
     }//END TRY CATCH
