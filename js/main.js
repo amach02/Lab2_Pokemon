@@ -1,8 +1,10 @@
-import { Servicios } from "./Servicios.js"; 
+import { Servicios } from "./Servicios.js";
 import { Pokemon } from "./business/pokemon.js";
 import { TipoColor } from "./business/TipoColor.js";
 import { EjemploGuardar } from "./data/EjemploGuardar.js";
 import { GuardarEquipo } from "./data/GuardarEquipo.js";
+import { Renderizar } from "./business/Renderizar.js";
+
 
 const btnSearch = document.getElementById("btnSearch");
 const btnSave = document.getElementById("btnSave");
@@ -10,17 +12,19 @@ const btnRead = document.getElementById("btnRead");
 const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
 const inputPokemonName = document.getElementById("pokemonName");
 const pokemonInfo = document.getElementById("pokemonInfo");
+const btnVerEquipo = document.getElementById("btnVerEquipo");
+const equipoContainer = document.getElementById("equipoContainer");
 Servicios.listaPokemon();
 btnSearch.addEventListener("click", async () => {
     pokemonInfo.innerHTML = "searching pokemon..."
-     searchPokemon(inputPokemonName.value.toLowerCase());
+    searchPokemon(inputPokemonName.value.toLowerCase());
 
 });
 
 btnSave.addEventListener("click", async () => {
-    const pokemons = [{nombre: 'pikachu', nivel: 10}, {nombre: 'charmander', nivel: 15}];
+    const pokemons = [{ nombre: 'pikachu', nivel: 10 }, { nombre: 'charmander', nivel: 15 }];
     Servicios.guardarPokemon(pokemons);
-const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
+    const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
 });
 
 btnSearch.addEventListener("click", async () => {
@@ -45,32 +49,55 @@ btnRead.addEventListener("click", async () => {
 });
 
 
-// Evento para guardar un pokemon en el equipo
 btnGuardarEquipo.addEventListener("click", async () => {
     const busqueda = inputPokemonName.value.toLowerCase();
+
     if (!busqueda) {
-        alert("Escribe un nombre o ID primero");
+        alert("Escribe un nombre o ID primero para buscar al Pokémon");
         return;
     }
+
     try {
+        // 1. Buscamos los datos actualizados de la API
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${busqueda}`);
+
         if (!response.ok) {
             alert("No se pudo encontrar el Pokémon para guardar");
             return;
         }
+
         const data = await response.json();
-        const pokemon = {
+
+        const pokemonParaGuardar = {
             nombre: data.name,
-            nivel: 10 // Puse este asi, pero se puede cambiar
+            nivel: 10,
+            imagen: data.sprites.other['official-artwork'].front_default,
+            tipo: data.types[0].type.name
         };
-        GuardarEquipo.guardarPokemon(pokemon);
+
+        //  GuardarEquipo ya se encarga de validar el límite de 6 y duplicados
+        GuardarEquipo.guardarPokemon(pokemonParaGuardar);
+
     } catch (error) {
         console.error("Error al procesar el guardado:", error);
-        alert("Hubo un error al intentar guardar el equipo");
+        alert("Hubo un error de conexión al intentar guardar el equipo");
     }
 });
 
+btnVerEquipo.addEventListener("click", () => {
+    // 1. Obtenemos los datos guardados en el equipo
+    const miEquipo = GuardarEquipo.obtenerEquipo();
 
+    // 2. Verificamos si existe el contenedor en el HTML
+    if (equipoContainer) {
+        // 3. Renderizamos usando la función
+        equipoContainer.innerHTML = Renderizar.equipoCompleto(miEquipo);
+
+        console.log("Mostrando equipo:", miEquipo);
+    } else {
+        console.error("Error: No se encontró el contenedor 'equipoContainer' en el HTML.");
+    }
+});
 
 async function searchPokemon(nombre) {
 
@@ -88,16 +115,8 @@ async function searchPokemon(nombre) {
 }//END serchPokemon
 
 function displayPokemonInfo(pokemon) {
-    
-    pokemonInfo.innerHTML = `
-        <h2>${pokemon.getNombre().toUpperCase()}</h2>
-        <img src="${pokemon.getImagen()}" alt="${pokemon.getNombre()}">
-        <p>Height: ${pokemon.getAltura()}</p>
-        <p>Weight: ${pokemon.getPeso()}</p>
-        <p>Types: ${pokemon.getTipo().join(", ")}</p>
-    `;
-    
+    //usamos la función que genera el HTML d
+    pokemonInfo.innerHTML = Renderizar.tarjetaDetallada(pokemon);
     TipoColor.changeBackground(pokemon.getTipo()[0]);
-}//END FUNCTION
-
+}
 

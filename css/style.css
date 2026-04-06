@@ -122,3 +122,35 @@ body {
 main {
     flex: 1; /* Esto empuja el footer hacia abajo */
 }
+.equipo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.mini-card-equipo {
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    width: 120px; /* Tamaño pequeño */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.mini-card-equipo:hover {
+    transform: translateY(-5px);
+    border: 2px solid #ff3c00;
+}
+
+.mini-card-equipo img {
+    width: 80px;
+    height: 80px;
+}
+
+.mini-card-info strong {
+    display: block;
+    font-size: 14px;
+    color: #1e1e2f;
+}

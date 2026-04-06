@@ -4,8 +4,8 @@ export class Pokemon {
         this.tipo = tipo;
         this.altura = altura;
         this.peso = peso;
-        this.imagen = imagen; 
-        this.estadisticas = estadisticas; 
+        this.imagen = imagen;
+        this.estadisticas = estadisticas;
     }
 
     static fromAPI(data) {
