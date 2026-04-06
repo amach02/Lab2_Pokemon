@@ -10,24 +10,44 @@ export class Servicios {
         return datos ? JSON.parse(datos) : [];//OPERADOR TERNARIO, SI HAY DATOS LOS PARSEO, SINO DEVUELVO UN ARRAY VACIO
     }
 
-    static async listaPokemon() {
-        try {
-            const respuesta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=150");
-            const data = await respuesta.json();
+static async listaPokemon() {
+    try {
+        const respuesta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=150");
+        const data = await respuesta.json();
 
-            const pokemons = data.results; // 👈 aquí vienen los 150
+        const pokemons = data.results;
 
-            const pokemonList = document.getElementById("pokemonList");
+        const datalist = document.getElementById("pokemonSuggestions");
 
-            pokemonList.innerHTML = pokemons
-                .map((pokemon, index) => `<li>${index + 1}. ${pokemon.name}</li>`)
-                .join("");
+        // SOLO AUTOCOMPLETE
+        datalist.innerHTML = pokemons
+            .map(pokemon => `<option value="${pokemon.name}">`)
+            .join("");
 
-            // (Opcional) guardar en localStorage
-            this.guardarPokemon(pokemons);
+        // (opcional) guardar
+        this.guardarPokemon(pokemons);
 
-        } catch (error) {
-            console.error("Error al obtener los Pokémon:", error);
-        }
+    } catch (error) {
+        console.error("Error al obtener los Pokémon:", error);
     }
+}
+
+    static async searchPokemon(nombre) {
+    try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+
+        if (!response.ok) {
+            throw new Error("Pokemon not found");
+        }
+
+        const data = await response.json();
+        return data; // 👈 SOLO devuelve datos
+
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+    
+    
 }

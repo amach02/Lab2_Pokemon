@@ -28,8 +28,17 @@ btnSave.addEventListener("click", async () => {
 });
 
 btnSearch.addEventListener("click", async () => {
-    pokemonInfo.innerHTML = "searching pokemon..."
-    searchPokemon(inputPokemonName.value.toLowerCase());
+    pokemonInfo.innerHTML = "searching pokemon...";
+
+    const data = await Servicios.searchPokemon(inputPokemonName.value.toLowerCase());
+
+    if (!data) {
+        pokemonInfo.innerHTML = "Pokemon not found";
+        return;
+    }
+
+    const nuevoPokemon = Pokemon.fromAPI(data);
+    displayPokemonInfo(nuevoPokemon);
 });
 
 btnSave.addEventListener("click", async () => {
@@ -99,20 +108,6 @@ btnVerEquipo.addEventListener("click", () => {
     }
 });
 
-async function searchPokemon(nombre) {
-
-    try {
-        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
-        if (!response.ok) {
-            throw new Error("Pokemon not found");
-        }//END IF
-        const data = await response.json();
-        const nuevoPokemon = Pokemon.fromAPI(data);
-        displayPokemonInfo(nuevoPokemon);
-    } catch (error) {
-        pokemonInfo.innerHTML = "Pokemon not found";
-    }//END TRY CATCH
-}//END serchPokemon
 
 function displayPokemonInfo(pokemon) {
     //usamos la función que genera el HTML d
