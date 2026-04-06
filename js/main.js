@@ -9,7 +9,7 @@ import { Renderizar } from "./business/Renderizar.js";
 const btnSearch = document.getElementById("btnSearch");
 const btnSave = document.getElementById("btnSave");
 const btnRead = document.getElementById("btnRead");
-const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
+const btnCapturar = document.getElementById("btnCapturar");
 const inputPokemonName = document.getElementById("pokemonName");
 const pokemonInfo = document.getElementById("pokemonInfo");
 const btnVerEquipo = document.getElementById("btnVerEquipo");
@@ -24,7 +24,7 @@ btnSearch.addEventListener("click", async () => {
 btnSave.addEventListener("click", async () => {
     const pokemons = [{ nombre: 'pikachu', nivel: 10 }, { nombre: 'charmander', nivel: 15 }];
     Servicios.guardarPokemon(pokemons);
-    const btnGuardarEquipo = document.getElementById("btnGuardarEquipo");
+    const btnCapturar = document.getElementById("btnCapturar");
 });
 
 btnSearch.addEventListener("click", async () => {
@@ -58,7 +58,7 @@ btnRead.addEventListener("click", async () => {
 });
 
 
-btnGuardarEquipo.addEventListener("click", async () => {
+btnCapturar.addEventListener("click", async () => {
     const busqueda = inputPokemonName.value.toLowerCase();
 
     if (!busqueda) {
