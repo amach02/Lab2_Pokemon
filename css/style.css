@@ -154,3 +154,73 @@ main {
     font-size: 14px;
     color: #1e1e2f;
 }
+
+/*  TABLETS */
+@media (max-width: 768px) {
+
+    #pokemonInfo,
+    #pokemonList {
+        width: 90%;
+        padding: 15px;
+    }
+
+    input {
+        width: 80%;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+    }
+
+    nav ul li {
+        margin: 5px;
+    }
+}
+
+
+/*  CELULARES */
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    input {
+        width: 90%;
+        font-size: 14px;
+    }
+
+    button {
+        width: 90%;
+        margin: 5px 0;
+    }
+
+    #pokemonInfo,
+    #pokemonList {
+        width: 95%;
+        padding: 10px;
+    }
+
+    /* GRID DEL EQUIPO */
+    .equipo-grid {
+        gap: 10px;
+    }
+
+    .mini-card-equipo {
+        width: 100px;
+        padding: 8px;
+    }
+
+    .mini-card-equipo img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .mini-card-info strong {
+        font-size: 12px;
+    }
+}
