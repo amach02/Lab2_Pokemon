@@ -17,7 +17,7 @@ const equipoContainer = document.getElementById("equipoContainer");
 Servicios.listaPokemon();
 btnSearch.addEventListener("click", async () => {
     pokemonInfo.innerHTML = "searching pokemon..."
-    searchPokemon(inputPokemonName.value.toLowerCase());
+    Servicios.searchPokemon(inputPokemonName.value.toLowerCase());
 
 });
 
